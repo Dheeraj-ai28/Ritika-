@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Ritika</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ffccd5, #f0a9d2); /* Romantic and classy colors */
+            color: #4a4a4a;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .question {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #f8a5c2;
+            color: #4a4a4a;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #f78fb3;
+        }
+
+        .hearts {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: red;
+            clip-path: polygon(50% 0%, 61% 18%, 75% 34%, 88% 47%, 100% 65%, 80% 100%, 50% 80%, 20% 100%, 0 65%, 12% 47%, 25% 34%, 39% 18%);
+            animation: fall 5s infinite;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .final-message {
+            font-size: 1.8rem;
+            color: #e63946;
+            text-align: center;
+        }
+
+        .compliment {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            color: #6c567b;
+        }
+
+        .warning-message {
+            font-size: 1.5rem;
+            color: #e63946;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="questions">
+            <div class="question" id="current-question"></div>
+            <div class="button-container" id="options-container">
+                <button id="yes-button">Yes</button>
+                <button id="no-button">No</button>
+            </div>
+        </div>
+        <div class="warning-message hidden" id="warning-message">
+            Stop smiling and say yes  🙄
+        </div>
+        <div class="final-message hidden" id="final-message">
+          So from my first love to my first girlfriend, from my first supporter to my first heart-to-heart, everything has been with you cutuu! You’ve been there for all my firsts, cheering me on and making them unforgettable!♥️ And now, this my first web project is also for you, my love!♥️ .Every 'first' I experience, whether big or small, has you written all over it😚 You are my first in so many ways and I can't wait for all the firsts we’ll share in the future!! Iykyk😂😚
+I LOVE YOUUU RITIKAA SOO SOO SOO MUCHHH😚♥️
+            <br><strong>Love, Dheeraj</strong>.
+        </div>
+        <div class="compliment hidden" id="compliment"></div>
+    </div>
+    <div class="hearts" id="hearts-container"></div>
+
+    <script>
+        const questions = [
+            "Will you make Dheeraj the happiest by being the mother of his kids?",
+            "Will you always be by Dheeraj's side?",
+            "Do you love Dheeraj the most in the world?",
+            "Will you go out with Dheeraj?",
+            "Will you marry him?",
+        ];
+
+        const kissQuestion = {
+            question: "Will you kiss him?",
+            options: ["Forehead Kiss", "Lip Kiss"],
+            compliments: [
+                "Hey cutuu👀♥️! So you are hereee!!♥️..okay then don't forget to take a forehead kiss in return too😉♥️..wait wait there is a message for you",
+                "Ayee noti notii! Ik you will definitely come here to divorce my lips😂😚 just a request please kiss me slowly and gently (ignore it .... Destroy them passionately)...wait wait there is a message for you"
+            ]
+        };
+
+        const questionElement = document.getElementById("current-question");
+        const optionsContainer = document.getElementById("options-container");
+        const yesButton = document.getElementById("yes-button");
+        const noButton = document.getElementById("no-button");
+        const heartsContainer = document.getElementById("hearts-container");
+        const finalMessage = document.getElementById("final-message");
+        const complimentElement = document.getElementById("compliment");
+        const warningMessage = document.getElementById("warning-message");
+
+        let currentQuestionIndex = 0;
+        let noClickedOnce = false;
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDelay = `${Math.random() * 5}s`;
+            heartsContainer.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        function startHeartRain() {
+            setInterval(createHeart, 200);
+        }
+
+        function showNextQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                questionElement.textContent = questions[currentQuestionIndex];
+                optionsContainer.innerHTML = `
+                    <button id="yes-button">Yes</button>
+                    <button id="no-button">No</button>
+                `;
+                const noButton = document.getElementById("no-button");
+                noButton.addEventListener("mousemove", () => {
+                    noButton.style.position = "absolute";
+                    noButton.style.top = `${Math.random() * 80 + 10}%`;
+                    noButton.style.left = `${Math.random() * 80 + 10}%`;
+                });
+                document.getElementById("yes-button").addEventListener("click", () => {
+                    currentQuestionIndex++;
+                    showNextQuestion();
+                });
+
+                // Handle the first "No" click for warning
+                noButton.addEventListener("click", () => {
+                    if (!noClickedOnce) {
+                        noClickedOnce = true;
+                        warningMessage.classList.remove("hidden");
+                        setTimeout(() => {
+                            warningMessage.classList.add("hidden");
+                        }, 3000);
+                    } else {
+                        noButton.style.position = "absolute";
+                        noButton.style.top = `${Math.random() * 80 + 10}%`;
+                        noButton.style.left = `${Math.random() * 80 + 10}%`;
+                    }
+                });
+            } else {
+                showKissQuestion();
+            }
+        }
+
+        function showKissQuestion() {
+            questionElement.textContent = kissQuestion.question;
+            optionsContainer.innerHTML = kissQuestion.options
+                .map(
+                    (option, index) =>
+                        `<button onclick="showCompliment(${index})">${option}</button>`
+                )
+                .join("");
+        }
+
+        function showCompliment(index) {
+            complimentElement.textContent = kissQuestion.compliments[index];
+            complimentElement.classList.remove("hidden");
+            optionsContainer.classList.add("hidden");
+            setTimeout(showFinalMessage, 11000); // Increased time to 9 seconds after lip kiss
+        }
+
+        function showFinalMessage() {
+            complimentElement.classList.add("hidden");
+            document.getElementById("questions").classList.add("hidden");
+            finalMessage.classList.remove("hidden");
+        }
+
+        showNextQuestion();
+        startHeartRain();
+    </script>
+</body>
+</html> 
